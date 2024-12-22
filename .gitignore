@@ -1,5 +1,6 @@
 *
+!/default_config.json
 !/.gitignore
-!/picard-sozler.py
+!/picard-lyrics.py
 !/LICENSE.md
 !/README.md

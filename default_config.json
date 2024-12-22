@@ -1,0 +1,18 @@
+{
+  "not_found_lyrics_update_time": {
+    "days": 1,
+    "hours": 0,
+    "minutes": 0,
+    "seconds": 0
+  },
+  "synced_lyrics_update_time": {
+    "days": 30,
+    "hours": 0,
+    "minutes": 0,
+    "seconds": 0
+  },
+  "unsynced_lyrics_update_time": null,
+  "prefer_unsynced": false,
+  "database_path": null
+}
+        
