@@ -24,7 +24,7 @@ matter. For these reasons, it is advised to skim over your lyrics.
 
 ## Installation
 
-Download the file `picard-sozler.py` onto your computer. Then just go to
+Download the file `picard-lyrics.py` onto your computer. Then just go to
 `Options > Plugins > Install plugin...` and select the downloaded file.
 The `Options` menu is on the toolbar, which is normally in the top left
 corner of Picard.
