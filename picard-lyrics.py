@@ -275,7 +275,6 @@ class LrcLib:
     def process_response(self, track_id, response) -> Lyrics:
         data = json.loads(response)
 
-        # resolve track_id later
         lyrics = Lyrics.create_empty_lyrics(track_id)
         lyrics.source = LyricsSource.LRCLIB
 
@@ -298,7 +297,6 @@ class Lyricsify:
     def __init__(self):
         self.ORIGINAL_USER_AGENT = picard.webservice.USER_AGENT_STRING
         self.content_regex = re.compile(r"lrcText = \"(.+)\";\$", re.MULTILINE)
-        self.metatags_regex = re.compile(r"\[[a-zA-Z]+:.*\]\r?\n", re.MULTILINE)
         self.sync_content = re.compile(r"\[\d+", re.MULTILINE)
         self.unicode_matching = re.compile(r'\\u([0-9a-fA-F]{4})', re.MULTILINE)
 
@@ -324,7 +322,6 @@ class Lyricsify:
 
     # \nlrcText = "[id: iltctltz]\\n[ar: Aphex Twin]\\n[al: Richard D. James Album]\\n[ti: 4]\\n[length: 04:40]\\n[01:33.01]Richard\\n[01:33.95]Yeah?\\n[03:06.54]Richard\\n[03:07.28]Yeah?\\n[03:11.75]"
     def process_response(self, track_id, response) -> Lyrics:
-        # resolve track_id later
         lyrics = Lyrics.create_empty_lyrics(track_id)
         lyrics.source = LyricsSource.Lyricsify
 
@@ -333,10 +330,10 @@ class Lyricsify:
                           .replace('\\n', '\n')
                           .replace('\\r', ''))  # remove carriage returns
 
-        lyrics_content = self.metatags_regex.sub('', lyrics_content)  # remove meta-tags from the lyrics
-        lyrics_content = self.unicode_matching.sub(lambda match: chr(int(match.group(1), 16)), lyrics_content) # fix \u300c symbols 
-        lyrics_content = lyrics_content.lstrip("\ufeff") # remove ZWNBSP BOM prefix
-        
+        lyrics_content = self.unicode_matching.sub(lambda match: chr(int(match.group(1), 16)),
+                                                   lyrics_content)  # fix unicode \u300c symbols 
+        lyrics_content = lyrics_content.lstrip("\ufeff")  # remove ZWNBSP BOM prefix
+
         lyrics_content = lyrics_content.strip()
 
         if self.sync_content.match(lyrics_content) is None:
