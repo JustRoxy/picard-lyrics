@@ -11,8 +11,11 @@
     "minutes": 0,
     "seconds": 0
   },
+  "sources": [
+    "lrclib",
+    "lyricsify"
+  ],
   "unsynced_lyrics_update_time": null,
   "prefer_unsynced": false,
   "database_path": null
 }
-        
