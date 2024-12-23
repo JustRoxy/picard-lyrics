@@ -300,6 +300,8 @@ class Lyricsify:
         self.content_regex = re.compile(r"lrcText = \"(.+)\";\$", re.MULTILINE)
         self.metatags_regex = re.compile(r"\[[a-zA-Z]+:.*\]\r?\n", re.MULTILINE)
         self.sync_content = re.compile(r"\[\d+", re.MULTILINE)
+        self.unicode_matching = re.compile(r'\\u([0-9a-fA-F]{4})', re.MULTILINE)
+        self.brackets_with_no_space = re.compile("\d\]\[\d", re.MULTILINE)
 
     def __str__(self):
         return "Lyricsify"
@@ -330,8 +332,14 @@ class Lyricsify:
         lyrics_content = (self.content_regex.search(response.decode('utf-8'))
                           .group(1)
                           .replace('\\n', '\n')
-                          .replace('\\r', '')) # remove carriage returns
+                          .replace('\\r', ''))  # remove carriage returns
+
         lyrics_content = self.metatags_regex.sub('', lyrics_content)  # remove meta-tags from the lyrics
+        lyrics_content = self.unicode_matching.sub(lambda match: chr(int(match.group(1), 16)), lyrics_content) # fix \u300c symbols 
+        lyrics_content = self.brackets_with_no_space.sub(lambda match: match.group(0).replace("][", "]\n["), lyrics_content) # some lyrics may be in a format [01:20.32][01:21:20]
+        lyrics_content = lyrics_content.lstrip("\ufeff") # remove ZWNBSP BOM prefix
+        
+        lyrics_content = lyrics_content.strip()
 
         if self.sync_content.match(lyrics_content) is None:
             lyrics.state = LyricsState.UNSYNCED
