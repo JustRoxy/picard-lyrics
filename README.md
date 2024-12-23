@@ -3,7 +3,8 @@
 Picard Lyrics is a plugin based on [Picard Sözler](https://github.com/densizengin/picard-sozler) with various
 additions (and therefore some overhead).
 
-[lrclib](https://lrclib.net/) is used as lyrics provider. It's free of charge, and just cool. Go check them out.
+[lrclib](https://lrclib.net/) is used as lyrics provider or [lyricsify.com](https://www.lyricsify.com/) as a fallback.
+It's free of charge, and just cool. Go check them out.
 
 ## Features
 
@@ -15,7 +16,8 @@ additions (and therefore some overhead).
 
 ## Disclaimer
 
-The plugin is **NOT** responsible for incorrectly matched lyrics and therefore accidental override of the correct ones. It's expected from the user to check the lyrics before saving. 
+The plugin is **NOT** responsible for incorrectly matched lyrics and therefore accidental override of the correct ones.
+It's expected from the user to check the lyrics before saving.
 
 Some occasional mismatches or misses might happen due to the nature of
 how tracks are matched against the lrclib. That project does not utilize
@@ -69,7 +71,8 @@ Edit `config.json` as you need.
 
 - `*_lyrics_update_time` (nullable) - object, controlling how frequent lyrics cache should update.
   Setting it to `null` disables cache update for this specific state.
-- `sources` - is a prioritized list of sources (higher - more priority). If lyrics couldn't be found in higher source the program will fall back
+- `sources` - is a prioritized list of sources (higher - more priority). You can remove a source if you doesn't want to
+  use them. If lyrics couldn't be found in higher source the program will fall back
   to the next source. Available sources for now:
     - `lrclib` - [lrclib.net](https://lrclib.net/)
     - `lyricsify` - [lyricsify.com](https://www.lyricsify.com/) (generally worse, fewer artists and fewer tracks)
@@ -79,12 +82,15 @@ Edit `config.json` as you need.
   by default.
 
 # I have an issue or feature request
-Feel free to open new issue [right here](https://github.com/JustRoxy/picard-lyrics)!!!
+
+Feel absolutely free to open new issue [right here](https://github.com/JustRoxy/picard-lyrics/issues)!!!
 
 ## Credits
 
 - [irclib](https://github.com/tranxuanthang/lrclib): cool stuff
 - [Picard Sözler](https://github.com/densizengin/picard-sozler): simple and just works
+- [lyricsify](https://www.lyricsify.com): they definitely doesn't want applications to parse their website, but it's a
+  fine resource nonetheless
 
 ## License
 
