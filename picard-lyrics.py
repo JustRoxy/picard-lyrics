@@ -298,7 +298,7 @@ class Lyricsify:
     def __init__(self):
         self.ORIGINAL_USER_AGENT = picard.webservice.USER_AGENT_STRING
         self.content_regex = re.compile(r"lrcText = \"(.+)\";\$", re.MULTILINE)
-        self.metatags_regex = re.compile(r"\[[a-zA-Z]+:.*\]\n", re.MULTILINE)
+        self.metatags_regex = re.compile(r"\[[a-zA-Z]+:.*\]\r?\n", re.MULTILINE)
         self.sync_content = re.compile(r"\[\d+", re.MULTILINE)
 
     def __str__(self):
@@ -327,8 +327,11 @@ class Lyricsify:
         lyrics = Lyrics.create_empty_lyrics(track_id)
         lyrics.source = LyricsSource.Lyricsify
 
-        lyrics_content = self.content_regex.search(response.decode('utf-8')).group(1).replace('\\n', '\n')
-        lyrics_content = self.metatags_regex.sub('', lyrics_content)  # remove metatags from the lyrics
+        lyrics_content = (self.content_regex.search(response.decode('utf-8'))
+                          .group(1)
+                          .replace('\\n', '\n')
+                          .replace('\\r', '')) # remove carriage returns
+        lyrics_content = self.metatags_regex.sub('', lyrics_content)  # remove meta-tags from the lyrics
 
         if self.sync_content.match(lyrics_content) is None:
             lyrics.state = LyricsState.UNSYNCED
